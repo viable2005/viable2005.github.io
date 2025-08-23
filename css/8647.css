@@ -1,0 +1,104 @@
+/* Define the variable font face */
+@font-face {
+  font-family: 'Mozilla Headline';
+  src: url('assets/fonts/Mozilla_Headline/MozillaHeadline-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: 100 900; /* Specify the weight range */
+  font-stretch: 50% 200%; /* Specify the width range */
+  font-display: swap; /* Improves loading performance */
+}
+
+/* Base font usage */
+.mozilla-headline {
+  font-family: 'Mozilla Headline', Arial, sans-serif;
+  font-variation-settings: 'wght' 400, 'wdth' 100;
+}
+
+/* Weight variations using font-weight property */
+.light {
+  font-weight: 300;
+}
+
+.regular {
+  font-weight: 400;
+}
+
+.medium {
+  font-weight: 500;
+}
+
+.semibold {
+  font-weight: 600;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.extrabold {
+  font-weight: 800;
+}
+
+.black {
+  font-weight: 900;
+}
+
+/* Width variations using font-stretch property */
+.condensed {
+  font-stretch: 75%;
+}
+
+.normal-width {
+  font-stretch: 100%;
+}
+
+.expanded {
+  font-stretch: 125%;
+}
+
+.extra-expanded {
+  font-stretch: 150%;
+}
+
+/* Direct control using font-variation-settings */
+.custom-variation {
+  font-variation-settings: 
+    'wght' 650,  /* Custom weight between standard values */
+    'wdth' 110;  /* Custom width between standard values */
+}
+
+/* Responsive typography examples */
+@media (max-width: 768px) {
+  .responsive-headline {
+    font-variation-settings: 'wght' 600, 'wdth' 90;
+  }
+}
+
+@media (min-width: 769px) {
+  .responsive-headline {
+    font-variation-settings: 'wght' 400, 'wdth' 100;
+  }
+}
+
+/* Animation example - smoothly transitioning between variations */
+.animated-font {
+  font-family: 'Mozilla Headline', Arial, sans-serif;
+  font-variation-settings: 'wght' 400, 'wdth' 100;
+  transition: font-variation-settings 0.3s ease;
+}
+
+.animated-font:hover {
+  font-variation-settings: 'wght' 700, 'wdth' 120;
+}
+
+/* Utility classes for common combinations */
+.headline-thin-condensed {
+  font-variation-settings: 'wght' 200, 'wdth' 75;
+}
+
+.headline-bold-expanded {
+  font-variation-settings: 'wght' 700, 'wdth' 125;
+}
+
+.headline-black-normal {
+  font-variation-settings: 'wght' 900, 'wdth' 100;
+}
