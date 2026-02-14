@@ -1327,10 +1327,93 @@
   <h1>Couch F**cker</h1>
 
 <h2 id="couch-fcker">Couch F**cker<a class="headerlink" href="#couch-fcker" title="Permanent link">¶</a></h2>
-<p><audio controls style="width: 100%;">
-  <source src="/assets/mp3s/couch_fucker.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio></p>
+<div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+  <audio id="audio" controls style="width: 100%;">
+    <source src="/assets/mp3s/couch_fucker.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="lyrics-container" id="lyrics"></div>
+</div>
+
+<script>
+  const audio = document.getElementById('audio');
+  const lyricsContainer = document.getElementById('lyrics');
+  let lyricsData = [];
+
+  // Fetch and parse LRC file
+  fetch('/assets/lyrics/couch_fucker.lrc')
+    .then(response => response.text())
+    .then(lrcText => {
+      lyricsData = parseLRC(lrcText);
+      displayLyrics();
+    });
+
+  function parseLRC(lrcText) {
+    const lines = lrcText.split('\n');
+    const lyrics = [];
+
+    lines.forEach(line => {
+      // Match timestamp pattern [mm:ss.xx] or [mm:ss.xxx]
+      const match = line.match(/\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)/);
+      if (match) {
+        const minutes = parseInt(match[1]);
+        const seconds = parseInt(match[2]);
+        const milliseconds = parseInt(match[3].padEnd(3, '0'));
+        const text = match[4].trim();
+
+        if (text) { // Only add non-empty lines
+          const time = minutes * 60 + seconds + milliseconds / 1000;
+          lyrics.push({ time, text });
+        }
+      }
+    });
+
+    // Sort by time (in case LRC isn't in order)
+    return lyrics.sort((a, b) => a.time - b.time);
+  }
+
+  function displayLyrics() {
+    lyricsData.forEach((lyric, index) => {
+      const lyricLine = document.createElement('div');
+      lyricLine.className = 'lyric-line';
+      lyricLine.textContent = lyric.text;
+      lyricLine.dataset.index = index;
+
+      // Click to seek
+      lyricLine.addEventListener('click', function() {
+        audio.currentTime = lyric.time;
+      });
+
+      lyricsContainer.appendChild(lyricLine);
+    });
+  }
+
+  // Update active lyric as audio plays
+  audio.addEventListener('timeupdate', function() {
+    const currentTime = audio.currentTime;
+    let activeIndex = -1;
+
+    // Find the current active lyric
+    for (let i = 0; i < lyricsData.length; i++) {
+      if (currentTime >= lyricsData[i].time) {
+        activeIndex = i;
+      } else {
+        break;
+      }
+    }
+
+    // Update active class
+    document.querySelectorAll('.lyric-line').forEach((line, index) => {
+      if (index === activeIndex) {
+        line.classList.add('active');
+        line.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        line.classList.remove('active');
+      }
+    });
+  });
+</script>
 
 
 
